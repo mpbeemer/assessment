@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import com.routeone.interview.Order.OrderComparator;
 public class StoreRegister {
 	
 	public ArrayList<Component> components = new ArrayList<Component>();
@@ -55,6 +58,7 @@ public class StoreRegister {
 		Component      orderComponent = null;
 		Boolean        componentFound;
 
+		order.total = (float) 0.0;
 		for (String component : items) {
 			// Fill order details from store register. Fail if no component match found.
 			componentFound = false;
@@ -65,6 +69,7 @@ public class StoreRegister {
 					orderComponent.componentName = component;
 					orderComponent.price = candidate.price;
 					orderComponent.category = candidate.category;
+					order.total = order.total + candidate.price;
 				}
 			}
 			if (!componentFound) {
@@ -74,7 +79,8 @@ public class StoreRegister {
 			
 			order.components.add(orderComponent);
 		}
-
+		
+		Collections.sort(order.components, new OrderComparator());
         return order;
     }
 }
